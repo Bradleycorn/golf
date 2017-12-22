@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+@import 'themes/cool-blue/cool-blue-theme';
+@import 'app/theme.app.components';
+
+@include mat-core();
+
+@mixin theme-golf-components($theme) {
+  @include theme-app-components($theme);
+}
+
+.cool-blue-theme {
+  @include angular-material-theme($cool-blue-theme);
+  @include theme-golf-components($cool-blue-theme);
+}

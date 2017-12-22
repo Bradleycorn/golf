@@ -1,0 +1,14 @@
+<h1>Round Editor</h1>
+<form [formGroup]="editorForm">
+    <label for="date">Round Date</label>
+    <input formControlName="dateInput" />
+
+    <label for="course">Course</label>
+    <input formControlName="courseInput" />
+
+
+</form>
+<div class='form-info'>
+    <p>Form Value: {{ editorForm.value | json }}</p>
+    <p>Form status: {{ editorForm.status | json }}</p>
+</div>
