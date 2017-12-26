@@ -9,4 +9,3 @@ $cool-blue-warn:    mat-palette($mat-deep-orange);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $cool-blue-theme: mat-light-theme($cool-blue-primary, $cool-blue-accent, $cool-blue-warn);
-

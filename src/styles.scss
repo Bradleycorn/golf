@@ -3,11 +3,20 @@
 @import 'themes/cool-blue/cool-blue-theme';
 @import 'app/theme.app.components';
 
-@include mat-core();
+// $golf-typography: mat-typography-config($font-family: 'Montserrat, Verdana, sans-serif');
 
 @mixin theme-golf-components($theme) {
   @include theme-app-components($theme);
 }
+
+
+@include mat-core();
+
+// @include angular-material-typography($golf-typography);
+body {
+    font-family: Montserrat, "Helvetica Neue", Verdana, sans-serif;
+}
+
 
 .cool-blue-theme {
   @include angular-material-theme($cool-blue-theme);

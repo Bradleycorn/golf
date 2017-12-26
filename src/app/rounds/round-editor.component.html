@@ -1,13 +1,30 @@
 <h1>Round Editor</h1>
 <form [formGroup]="editorForm">
-    <label for="date">Round Date</label>
-    <input formControlName="dateInput" />
 
-    <label for="course">Course</label>
-    <input formControlName="courseInput" />
+    <mat-form-field hintLabel="mm/dd/yy">
+      <mat-label><mat-icon>date_range</mat-icon> Date</mat-label>
+      <input type="text" matInput formControlName="dateInput" />
+    </mat-form-field>
 
+    <mat-form-field>
+        <mat-label><mat-icon>golf_course</mat-icon>Course</mat-label>
+        <input type="text" matInput formControlName="courseInput" />
+    </mat-form-field>
 
+    <mat-form-field>
+        <mat-label><mat-icon>attach_money</mat-icon>Greens Fee</mat-label>
+        <input type="text" matInput formControlName="greensFeeInput" />
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="cartInput">Rode Cart</mat-slide-toggle>
+
+    <mat-form-field>
+        <mat-label><mat-icon>restaurant</mat-icon>Food Cost</mat-label>
+        <input type="text" matInput formControlName="foodInput" />
+    </mat-form-field>
 </form>
+
+
 <div class='form-info'>
     <p>Form Value: {{ editorForm.value | json }}</p>
     <p>Form status: {{ editorForm.status | json }}</p>

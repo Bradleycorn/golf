@@ -24,8 +24,9 @@ export class RoundEditorComponent implements OnInit {
         this.editorForm = this._fb.group({
             dateInput: ['', Validators.pattern(/[0-9]{1,2}{\/|-}[0-9]{1,2}{\/|-}[0-9]{2,4}/)],
             courseInput: ['', Validators.required],
-            greensFeeInput: ['', Validators.min(-1)],
-            foodInput: ['', Validators.min(0)]
+            greensFeeInput: ['', Validators.min(0)],
+            foodInput: ['', Validators.min(0)],
+            cartInput: ['']
         });
     }
 }
