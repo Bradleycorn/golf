@@ -1,7 +1,18 @@
-export class GolfRound {
+import { IGolfRound } from './golf-round.interface';
+
+export class GolfRound implements IGolfRound {
     private _datePlayed: Date;
-    get date(): Date { return this._datePlayed; }
+    get date(): Date {
+        if (!this._datePlayed) {
+            this._datePlayed = new Date();
+        }
+        return this._datePlayed;
+    }
     set date(value: Date) { this._datePlayed = value; }
+
+    get datePlayed(): number {
+        return this.date.getTime();
+    }
 
     private _course: string;
     get course(): string { return this._course; }
@@ -23,13 +34,15 @@ export class GolfRound {
     get foodCost(): number { return this._foodCost; }
     set foodCost(value: number) { this._foodCost = value; }
 
-    constructor(roundDate: Date, course: string, greensFee: number, cart: boolean = true, food: boolean = false, foodCost: number = 0) {
-        this._datePlayed = roundDate;
-        this._course = course;
-        this._greensFee = greensFee;
-        this._rodeCart = cart;
-        this._ateFood = food;
-        this._foodCost = foodCost;
+    constructor(round?: IGolfRound) {
+        if (round) {
+            this._datePlayed = new Date(round.datePlayed);
+            this._course = round.course;
+            this._greensFee = round.greensFee;
+            this._rodeCart = round.rodeCart;
+            this._ateFood = round.ateFood;
+            this._foodCost = round.foodCost;
+        }
     }
 }
 

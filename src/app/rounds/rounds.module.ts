@@ -4,6 +4,9 @@ import { RoundEditorComponent } from './round-editor.component';
 import { RoundsRouterModule } from './rounds-router.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule } from '@angular/material';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { RoundsService } from '../shared/services/rounds.service';
+import { RoundListComponent } from './round-list.component';
 
 @NgModule({
     imports: [
@@ -13,12 +16,18 @@ import { MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule
         MatIconModule,
         MatSlideToggleModule,
         RoundsRouterModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        AngularFirestoreModule
+    ],
+    providers: [
+        RoundsService,
     ],
     declarations: [
-       RoundEditorComponent
+        RoundListComponent,
+        RoundEditorComponent
     ],
     exports: [
+        RoundListComponent,
         RoundEditorComponent
     ]
 })

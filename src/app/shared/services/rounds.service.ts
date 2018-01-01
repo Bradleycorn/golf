@@ -1,23 +1,46 @@
 import { Injectable } from '@angular/core';
 import { GolfRound } from '../models/golf-round.class';
+import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction } from 'angularfire2/firestore';
+import { IGolfRound } from '../models/golf-round.interface';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class RoundsService {
+
+    private _roundsCollection: AngularFirestoreCollection<IGolfRound>;
+    public roundChanges: Observable<boolean>;
+
     private _rounds: GolfRound[];
     get rounds(): GolfRound[] { return this._rounds; }
 
-    constructor() {
-        this.addRound(new GolfRound(new Date(2017, 4, 1, 13, 0), 'Hurstbourne CC', 63.27, true, false));
-        this.addRound(new GolfRound(new Date(2017, 1, 1, 12, 0), 'Glen Oaks', 42.5, true, true, 18));
-        this.addRound(new GolfRound(new Date(2017, 8, 1, 8, 0), 'Persimmon Ridge', 0));
+    constructor(fireDb: AngularFirestore) {
+        this._rounds = [];
+        this._roundsCollection = fireDb.collection('rounds');
+        
+
+        this.roundChanges = this._roundsCollection.stateChanges().map((roundData) => {
+
+            const debug = true;
+
+            roundData.forEach((item: DocumentChangeAction) => {
+                const data: IGolfRound = item.payload.doc.data() as IGolfRound;
+
+                switch (item.type) {
+                    case 'added':
+=                       this._rounds.push(new GolfRound(data));
+                        break;
+                    case 'removed':
+                        // TODO: Find round in list and delete it.
+                    case 'modified':
+                        // TODO: Find round in list and replace it.
+                }
+            });
+
+            return true;
+        });
     }
 
     public addRound(newRound: GolfRound) {
-        if (this._rounds.length === 0) {
-            this._rounds.push(newRound);
-        } else {
-            const insertAt = this._rounds.findIndex((round) => round.date > newRound.date) - 1;
-            this._rounds.splice(insertAt > -1 ? insertAt : 0, 0, newRound);
-        }
+        this._roundsCollection.add(newRound);
     }
 }

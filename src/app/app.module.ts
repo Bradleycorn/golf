@@ -19,7 +19,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireModule.initializeApp(environment.firebaseConfig, 'golf'),
         AngularFirestoreModule,
         AngularFireAuthModule,
         RoundsModule,
