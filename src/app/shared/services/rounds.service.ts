@@ -40,7 +40,11 @@ export class RoundsService {
         });
     }
 
-    public addRound(newRound: GolfRound) {
-        this._roundsCollection.add(newRound.asIGolfRound());
+    public saveRound(round: GolfRound) {
+        if (round.Id) {
+            this._roundsCollection.doc(round.Id).update(round.asIGolfRound);
+        } else {
+            this._roundsCollection.add(round.asIGolfRound());
+        }
     }
 }

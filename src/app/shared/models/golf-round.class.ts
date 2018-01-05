@@ -40,7 +40,7 @@ export class GolfRound implements IGolfRound {
     set foodCost(value: number) { this._foodCost = value; }
 
     constructor(refId?: string, round?: IGolfRound) {
-        this._roundId = '';
+        this._roundId = null;
         this._datePlayed = new Date();
         this._course = '';
         this._greensFee = 0;
