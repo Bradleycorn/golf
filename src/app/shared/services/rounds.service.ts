@@ -16,7 +16,6 @@ export class RoundsService {
     constructor(fireDb: AngularFirestore) {
         this._rounds = [];
         this._roundsCollection = fireDb.collection('rounds');
-        
 
         this.roundChanges = this._roundsCollection.stateChanges().map((roundData) => {
 
@@ -24,10 +23,11 @@ export class RoundsService {
 
             roundData.forEach((item: DocumentChangeAction) => {
                 const data: IGolfRound = item.payload.doc.data() as IGolfRound;
+                const refId: string = item.payload.doc.id;
 
                 switch (item.type) {
                     case 'added':
-=                       this._rounds.push(new GolfRound(data));
+                        this._rounds.push(new GolfRound(refId, data));
                         break;
                     case 'removed':
                         // TODO: Find round in list and delete it.
@@ -41,6 +41,6 @@ export class RoundsService {
     }
 
     public addRound(newRound: GolfRound) {
-        this._roundsCollection.add(newRound);
+        this._roundsCollection.add(newRound.asIGolfRound());
     }
 }

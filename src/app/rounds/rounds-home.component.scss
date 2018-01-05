@@ -1,0 +1,16 @@
+@media (min-width: 500px) {
+    section {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+    
+    golf-round-list {
+        flex: 1 1 auto;
+    }
+    
+    golf-editor {
+        flex: 0 1 300px;
+    }
+}

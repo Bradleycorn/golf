@@ -16,12 +16,21 @@
         <input type="text" matInput formControlName="greensFeeInput" />
     </mat-form-field>
 
-    <mat-slide-toggle formControlName="cartInput">Rode Cart</mat-slide-toggle>
-
+    <mat-chip-list [multiple]="false" formControlName="cartInput">
+        <mat-chip color="primary" [value]="true" (click)="toggleCart(true)">Rode Cart</mat-chip>
+        <mat-chip color="primary" [value]="false" (click)="toggleCart(false)">Walked</mat-chip>
+    </mat-chip-list>
+    
+    
+    <mat-checkbox labelPosition="after" color="primary" formControlName="ateFoodCheck">Food & Drink</mat-checkbox>
+    
     <mat-form-field>
         <mat-label><mat-icon>restaurant</mat-icon>Food Cost</mat-label>
         <input type="text" matInput formControlName="foodInput" />
     </mat-form-field>
+    
+    <button mat-button type="button" class="btn-secondary">Cancel</button>
+    <button mat-button type="button" class="btn-primary" [disabled]="editorForm.pristine || editorForm.invalid">Save</button>
 </form>
 
 

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RoundsService } from '../shared/services/rounds.service';
 import { Subscription } from 'rxjs/Subscription';
 import { GolfRound } from '../shared/models/golf-round.class';
-=
+
 @Component({
     selector: 'golf-round-list',
     templateUrl: './round-list.component.html',

@@ -1,24 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/theming';
 @import 'themes/cool-blue/cool-blue-theme';
+@import 'themes/indigo-orange/indigo-orange.theme';
 @import 'app/theme.app.components';
 
-// $golf-typography: mat-typography-config($font-family: 'Montserrat, Verdana, sans-serif');
+@mixin apply-theme($theme) {
+    @include angular-material-theme($theme);
+    @include theme-app-components($theme);
 
-@mixin theme-golf-components($theme) {
-  @include theme-app-components($theme);
+    $accent: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $grey-palette: mat-palette($mat-grey);
+    
+    
+    .btn-primary {
+        background-color: mat-color($accent, default);
+        color: mat-color($accent, default-contrast);
+    }
+
+    .btn-secondary {
+        background-color: mat-color($grey-palette, 200);
+        color: mat-color($grey-palette, '200-contrast');
+    }
+
+    button[disabled] {
+        background-color: mat-color($accent, 50) !important;
+        color: mat-color($accent, '50-contrast', .5) !important;
+    }
+    
+    .mat-checkbox-label {
+        color: mat-color($foreground, secondary-text);
+    }
 }
+
 
 
 @include mat-core();
 
-// @include angular-material-typography($golf-typography);
+@include angular-material-typography(mat-typography-config(
+    $font-family: 'Montserrat, "Helvetica Neue", Verdana, sans-serif',
+    $body-1: mat-typography-level(16px, 28px, 400),
+    $body-2: mat-typography-level(16px, 32px, 500),
+    $title:         mat-typography-level(20px, 32px, 500),
+    $subheading-2:  mat-typography-level(18px, 32px, 400),
+    $subheading-1:  mat-typography-level(17px, 28px, 400)
+));
+
 body {
     font-family: Montserrat, "Helvetica Neue", Verdana, sans-serif;
 }
 
+button {
+    text-transform: uppercase;
+}
 
 .cool-blue-theme {
-  @include angular-material-theme($cool-blue-theme);
-  @include theme-golf-components($cool-blue-theme);
+    @include apply-theme($cool-blue-theme);
 }
+
+.indigo-theme {
+    @include apply-theme($indigo-theme);
+}
+

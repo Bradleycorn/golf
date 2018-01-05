@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RoundEditorComponent } from './round-editor.component';
+import { RoundsHomeComponent } from './rounds-home.component';
 
 const roundsPaths: Routes = [
-    { path: 'rounds', component: RoundEditorComponent }
+    { path: 'rounds', component: RoundsHomeComponent }
 ];
 
 @NgModule({
