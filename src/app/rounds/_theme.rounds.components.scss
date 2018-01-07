@@ -1,11 +1,11 @@
 @import '~@angular/material/theming';
 
 @mixin theme-rounds-components($theme) {
-    @include theme-home-component($theme);
+    @include theme-round-list-component($theme);
 }
 
 
-@mixin theme-round-editor-component($theme) {
+@mixin theme-round-list-component($theme) {
     // retrieve variables from theme
     // (all possible variables, use only what you really need)
     $primary: map-get($theme, primary);
@@ -14,5 +14,30 @@
     $foreground: map-get($theme, foreground);
     $background: map-get($theme, background);
 
+    li.selected {
+        background-color: mat-color($accent, default);
+        color: mat-color($accent, default-contrast);
+
+        .round-total, .date {
+            color: mat-color($accent, default-contrast, 0.7);
+        }
+    
+        @media (min-width: 500px) {
+            .round-total, .date {
+                color: mat-color($accent, default-contrast);
+            }
+        }
+
+    }
+
+    .round-total, .date {
+        color: mat-color($foreground, secondary-text);
+    }
+
+    @media (min-width: 500px) {
+        .round-total, .date {
+            color: mat-color($foreground, base);
+        }
+    }
     // all of these variables contain many additional variables
 }

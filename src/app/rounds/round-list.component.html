@@ -1,7 +1,10 @@
 <div class='round-list'>
     <ul>
-        <li class='round' *ngFor="let round of rounds">
-            {{ round.course }}
+        <li class='round' *ngFor="let round of rounds" [class.selected]="round === selectedRound" (click)="selectRound(round)">
+            <div class="date">{{ round.date | date:'MMM dd' }}</div>
+            <div class="course">{{ round.course }}</div>
+            <div class="greens-fee">{{ round.greensFee | currency:'USD':'symbol-narrow' }}</div>
+            <div class="round-total">{{ round.totalSpent | currency:'USD':'symbol-narrow' }}</div>
         </li>
     </ul>
 </div>

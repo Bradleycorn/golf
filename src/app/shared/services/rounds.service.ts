@@ -15,7 +15,7 @@ export class RoundsService {
 
     constructor(private fireDb: AngularFirestore) {
         this._rounds = [];
-        this._roundsCollection = fireDb.collection('rounds');
+        this._roundsCollection = fireDb.collection('rounds', ref => ref.orderBy('date', 'desc'));
 
         this.roundChanges = this._roundsCollection.stateChanges().map((roundData) => {
 
@@ -25,22 +25,18 @@ export class RoundsService {
                 const data: IGolfRound = item.payload.doc.data() as IGolfRound;
                 const refId: string = item.payload.doc.id;
 
-                let index = this._rounds.findIndex((round) => {
-                    return (round.Id === refId);
-                });
-
                 if (item.type === 'removed') {
-                    if (index >= 0) {
-                        this._rounds.splice(index, 1);
-                    }
-                } else if (index >= 0) {
-                    this._rounds[index] = new GolfRound(refId, data);
+                    this._rounds.splice(item.payload.oldIndex, 1);
                 } else {
-                    index = this._rounds.length;
-                    this._rounds.push(new GolfRound(refId, data));
+                    if (item.type === 'modified' && item.payload.newIndex !== item.payload.oldIndex) {
+                        this._rounds.splice(item.payload.oldIndex, 1);
+                    }
+                    this._rounds.splice(item.payload.newIndex, 0, new GolfRound(refId, data));
                 }
-                
-                changes.push({index: index, operation: item.type});
+
+                console.info(`id: ${refId} ${item.type}. newIndex: ${item.payload.newIndex}. oldIndex: ${item.payload.oldIndex}`);
+
+                changes.push({index: item.payload.newIndex, operation: item.type});
             });
 
             return changes;

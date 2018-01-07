@@ -6,18 +6,14 @@ export class GolfRound implements IGolfRound {
     get Id(): string { return this._roundId; }
     set Id(value: string) { this._roundId = value; }
     
-    private _datePlayed: Date;
+    private _date: Date;
     get date(): Date {
-        if (!this._datePlayed) {
-            this._datePlayed = new Date();
+        if (!this._date) {
+            this._date = new Date();
         }
-        return this._datePlayed;
+        return this._date;
     }
-    set date(value: Date) { this._datePlayed = value; }
-
-    get datePlayed(): number {
-        return this.date.getTime();
-    }
+    set date(value: Date) { this._date = value; }
 
     private _course: string;
     get course(): string { return this._course; }
@@ -39,9 +35,13 @@ export class GolfRound implements IGolfRound {
     get foodCost(): number { return this._foodCost; }
     set foodCost(value: number) { this._foodCost = value; }
 
+    get totalSpent(): number {
+        return this.greensFee + this.foodCost;
+    }
+
     constructor(refId?: string, round?: IGolfRound) {
         this._roundId = null;
-        this._datePlayed = new Date();
+        this._date = new Date();
         this._course = '';
         this._greensFee = 0;
         this._rodeCart = true;
@@ -49,7 +49,7 @@ export class GolfRound implements IGolfRound {
         this._foodCost = 0;
 
         if (round) {
-            this._datePlayed = new Date(round.datePlayed);
+            this._date = round.date;
             this._course = round.course;
             this._greensFee = round.greensFee;
             this._rodeCart = round.rodeCart;
@@ -64,7 +64,7 @@ export class GolfRound implements IGolfRound {
 
     public asIGolfRound(): IGolfRound {
         return {
-            datePlayed: this.datePlayed,
+            date: this.date,
             course: this.course,
             greensFee: this.greensFee,
             rodeCart: this.rodeCart,

@@ -1,5 +1,5 @@
 export interface IGolfRound {
-    datePlayed: number; // timestamp
+    date: Date;
     course: string;
     greensFee: number;
     rodeCart: boolean;

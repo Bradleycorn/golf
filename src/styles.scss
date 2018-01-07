@@ -3,10 +3,12 @@
 @import 'themes/cool-blue/cool-blue-theme';
 @import 'themes/indigo-orange/indigo-orange.theme';
 @import 'app/theme.app.components';
+@import 'app/rounds/theme.rounds.components';
 
 @mixin apply-theme($theme) {
     @include angular-material-theme($theme);
     @include theme-app-components($theme);
+    @include theme-rounds-components($theme);
 
     $accent: map-get($theme, accent);
     $foreground: map-get($theme, foreground);

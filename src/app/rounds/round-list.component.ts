@@ -13,6 +13,7 @@ export class RoundListComponent implements OnInit, OnDestroy {
     private dataSubscription: Subscription = null;
 
     public readonly rounds: GolfRound[];
+    public selectedRound: GolfRound;
 
     constructor(private _roundsService: RoundsService) {
         this.rounds = this._roundsService.rounds;
@@ -27,6 +28,10 @@ export class RoundListComponent implements OnInit, OnDestroy {
             this.dataSubscription.unsubscribe();
             this.dataSubscription = null;
         }
+    }
+
+    public selectRound(round: GolfRound) {
+        this.selectedRound = round;
     }
 
 }

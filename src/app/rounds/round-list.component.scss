@@ -1,0 +1,62 @@
+@import '~@angular/material/theming';
+
+.round-list ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+        @include mat-elevation-transition;
+        @include mat-elevation(2);
+        padding: 10px;
+        margin-bottom: 10px;
+        display: grid;
+        grid-template-columns: 1fr 75px;
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas: "course greensFee"
+                             "date total";
+
+    }
+
+    @media (min-width: 500px) {
+        li {
+                grid-template-columns: 75px 1fr 100px 100px;
+                grid-template-rows: 1fr;
+                grid-template-areas: "date course greensFee total";        
+        }
+        
+        .greens-fee {
+            font-size: 1em;
+        }
+    
+        .round-total {
+            font-weight: bold;
+        }
+    }
+
+    .date {
+        grid-area: date;
+    }
+
+    .course {
+        font-weight: bold;
+        font-size: 1.1em;
+        grid-area: course;
+    }
+
+    .greens-fee {
+        grid-area: greensFee;
+        justify-self: end;
+        font-size: .9em;
+    }
+
+    .round-total {
+        grid-area: total;
+        justify-self: end;
+        font-weight: bold;
+    }
+
+}
+
+@media (max-width: 499px) {
+
+}
