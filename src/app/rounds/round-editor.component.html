@@ -29,8 +29,8 @@
         <input type="text" matInput formControlName="foodInput" />
     </mat-form-field>
     
-    <button mat-button type="button" class="btn-secondary">Cancel</button>
-    <button mat-button type="button" class="btn-primary" [disabled]="editorForm.pristine || editorForm.invalid">Save</button>
+    <button mat-button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+    <button mat-button type="button" class="btn-primary" (click)="saveRound()" [disabled]="editorForm.pristine || editorForm.invalid">Save</button>
 </form>
 
 

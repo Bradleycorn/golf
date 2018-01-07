@@ -4,6 +4,9 @@ import { RoundsService } from '../shared/services/rounds.service';
 import { MatChipListChange } from '@angular/material';
 import { FormControl, AbstractControl } from '@angular/forms/src/model';
 import { GolfRound } from '../shared/models/golf-round.class';
+import { UTILS } from '../shared/utils.class';
+
+import * as moment from 'moment';
 
 @Component({
     selector: 'golf-editor',
@@ -23,6 +26,7 @@ export class RoundEditorComponent implements OnInit {
 
     constructor(roundsService: RoundsService, fb: FormBuilder) {
         this._fb = fb;
+        this._roundsService = roundsService;
         this.createForm();
     }
 
@@ -44,19 +48,31 @@ export class RoundEditorComponent implements OnInit {
             this.round = new GolfRound();
         }
 
-        this.round.date = formModel.dateInput as Date;
+        this.round.date = moment(formModel.dateInput).toDate();
         this.round.course = formModel.courseInput as string;
-        this.round.greensFee = formModel.greensFeeInput as number;
-        this.round.rodeCart = formModel.rodeCart as boolean;
+        this.round.greensFee = UTILS.coerceToFloat(formModel.greensFeeInput, 0);
+        this.round.rodeCart = formModel.cartInput as boolean;
         this.round.ateFood = formModel.ateFoodCheck as boolean;
 
         if (this.round.ateFood) {
-            this.round.foodCost = formModel.foodInput as number;
+            this.round.foodCost = UTILS.coerceToFloat(formModel.foodInput as number, 0);
         }
 
         this._roundsService.saveRound(this.round);
     }
+    
+    public cancel() {
+        this.editorForm.patchValue({
+            dateInput: '12/12/2017',
+            courseInput: 'Auto Course',
+            greensFeeInput: 43.22,
+            cartInput: true,
+            ateFoodCheck: true,
+            foodInput: 22
+        });
+    }
 
+    
     private createForm() {
         this.editorForm = this._fb.group({
             dateInput: ['', [Validators.required, Validators.pattern(/[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,4}/)]],

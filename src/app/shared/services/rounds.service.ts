@@ -8,35 +8,42 @@ import { Observable } from 'rxjs/Observable';
 export class RoundsService {
 
     private _roundsCollection: AngularFirestoreCollection<IGolfRound>;
-    public roundChanges: Observable<boolean>;
+    public roundChanges: Observable<{index, operation}[]>;
 
     private _rounds: GolfRound[];
     get rounds(): GolfRound[] { return this._rounds; }
 
-    constructor(fireDb: AngularFirestore) {
+    constructor(private fireDb: AngularFirestore) {
         this._rounds = [];
         this._roundsCollection = fireDb.collection('rounds');
 
         this.roundChanges = this._roundsCollection.stateChanges().map((roundData) => {
 
-            const debug = true;
+            const changes = [];
 
             roundData.forEach((item: DocumentChangeAction) => {
                 const data: IGolfRound = item.payload.doc.data() as IGolfRound;
                 const refId: string = item.payload.doc.id;
 
-                switch (item.type) {
-                    case 'added':
-                        this._rounds.push(new GolfRound(refId, data));
-                        break;
-                    case 'removed':
-                        // TODO: Find round in list and delete it.
-                    case 'modified':
-                        // TODO: Find round in list and replace it.
+                let index = this._rounds.findIndex((round) => {
+                    return (round.Id === refId);
+                });
+
+                if (item.type === 'removed') {
+                    if (index >= 0) {
+                        this._rounds.splice(index, 1);
+                    }
+                } else if (index >= 0) {
+                    this._rounds[index] = new GolfRound(refId, data);
+                } else {
+                    index = this._rounds.length;
+                    this._rounds.push(new GolfRound(refId, data));
                 }
+                
+                changes.push({index: index, operation: item.type});
             });
 
-            return true;
+            return changes;
         });
     }
 
