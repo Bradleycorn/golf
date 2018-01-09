@@ -13,7 +13,9 @@ export class RoundListComponent implements OnInit, OnDestroy {
     private dataSubscription: Subscription = null;
 
     public readonly rounds: GolfRound[];
-    public selectedRound: GolfRound;
+    public get selectedRound(): GolfRound {
+        return this._roundsService.selectedRound;
+    }
 
     constructor(private _roundsService: RoundsService) {
         this.rounds = this._roundsService.rounds;
@@ -31,7 +33,7 @@ export class RoundListComponent implements OnInit, OnDestroy {
     }
 
     public selectRound(round: GolfRound) {
-        this.selectedRound = round;
+        this._roundsService.selectRound(round);
     }
 
 }
