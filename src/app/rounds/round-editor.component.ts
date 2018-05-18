@@ -30,9 +30,13 @@ export class RoundEditorComponent implements OnInit, OnChanges {
     public editorForm: FormGroup;
     public foodControl: FormControl;
     public readonly chips = [ 'walked', 'rode' ];
-
+    
     @Input()
     private round: GolfRound;
+    
+    public get title(): string {
+        return  (this.round && this.round.Id) ? 'Edit Round' : 'Add Round';
+    }
 
     constructor(roundsService: RoundsService, fb: FormBuilder) {
         this._fb = fb;
@@ -98,7 +102,7 @@ export class RoundEditorComponent implements OnInit, OnChanges {
             this.round = new GolfRound();
         }
 
-        this.round.date = moment(formModel.dateInput).toDate();
+        this.round.date = moment(formModel.dateInput, 'MM-DD-YYYY').toDate();
         this.round.course = formModel.courseInput as string;
         this.round.greensFee = UTILS.coerceToFloat(formModel.greensFeeInput, 0);
         this.round.rodeCart = formModel.cartInput as boolean;
@@ -109,6 +113,8 @@ export class RoundEditorComponent implements OnInit, OnChanges {
         }
 
         this._roundsService.saveRound(this.round);
+        this._roundsService.selectRound(null);
+        this.round = null;
     }
     
     public cancel() {

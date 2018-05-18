@@ -3,16 +3,26 @@ import { GolfRound } from '../models/golf-round.class';
 import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction } from 'angularfire2/firestore';
 import { IGolfRound } from '../models/golf-round.interface';
 import { Observable } from 'rxjs/Observable';
+import * as firebase from 'firebase';
+
+
+export interface IRoundChange {
+    round: GolfRound;
+    changeType: firebase.firestore.DocumentChangeType;
+    newIndex: number;
+    oldIndex: number;
+}
+
 
 @Injectable()
 export class RoundsService {
 
     private _roundsCollection: AngularFirestoreCollection<IGolfRound>;
-    public roundChanges: Observable<{index, operation}[]>;
+    public roundChanges: Observable<IRoundChange[]>;
 
     private _rounds: GolfRound[];
     get rounds(): GolfRound[] { return this._rounds; }
-    
+
     private _selectedRound: GolfRound;
     public get selectedRound(): GolfRound {
         return this._selectedRound;
@@ -30,19 +40,18 @@ export class RoundsService {
             roundData.forEach((item: DocumentChangeAction) => {
                 const data: IGolfRound = item.payload.doc.data() as IGolfRound;
                 const refId: string = item.payload.doc.id;
+                const round: GolfRound = new GolfRound(refId, data);
+                const changeType: string = item.type;
+                const newIndex: number = item.payload.newIndex;
+                const oldIndex: number = item.payload.oldIndex;
 
-                if (item.type === 'removed') {
-                    this._rounds.splice(item.payload.oldIndex, 1);
-                } else {
-                    if (item.type === 'modified' && item.payload.newIndex !== item.payload.oldIndex) {
-                        this._rounds.splice(item.payload.oldIndex, 1);
-                    }
-                    this._rounds.splice(item.payload.newIndex, 0, new GolfRound(refId, data));
-                }
+                changes.push({round: round, changeType: changeType, newIndex: newIndex, oldIndex: oldIndex});
+/*
 
                 console.info(`id: ${refId} ${item.type}. newIndex: ${item.payload.newIndex}. oldIndex: ${item.payload.oldIndex}`);
 
                 changes.push({index: item.payload.newIndex, operation: item.type});
+*/
             });
 
             return changes;
@@ -51,7 +60,7 @@ export class RoundsService {
 
     public saveRound(round: GolfRound) {
         if (round.Id) {
-            this._roundsCollection.doc(round.Id).update(round.asIGolfRound);
+            this._roundsCollection.doc(round.Id).update(round.asIGolfRound());
         } else {
             this._roundsCollection.add(round.asIGolfRound());
         }

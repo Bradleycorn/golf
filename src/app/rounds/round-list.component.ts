@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RoundsService } from '../shared/services/rounds.service';
+import { IRoundChange, RoundsService } from '../shared/services/rounds.service';
 import { Subscription } from 'rxjs/Subscription';
 import { GolfRound } from '../shared/models/golf-round.class';
 
@@ -18,11 +18,13 @@ export class RoundListComponent implements OnInit, OnDestroy {
     }
 
     constructor(private _roundsService: RoundsService) {
-        this.rounds = this._roundsService.rounds;
+        this.rounds = [];
     }
 
     ngOnInit() {
-        this.dataSubscription = this._roundsService.roundChanges.subscribe();
+        this.dataSubscription = this._roundsService.roundChanges.subscribe((changes: IRoundChange[]) => {
+            this.onRoundChanges(changes);
+        });
     }
 
     ngOnDestroy() {
@@ -30,6 +32,24 @@ export class RoundListComponent implements OnInit, OnDestroy {
             this.dataSubscription.unsubscribe();
             this.dataSubscription = null;
         }
+    }
+
+    private onRoundChanges(changes: IRoundChange[]) {
+        changes.forEach((changedRound: IRoundChange) => {
+
+            if (changedRound.changeType === 'removed') {
+                this.rounds.splice(changedRound.oldIndex, 1);
+            } else if (changedRound.changeType === 'modified') {
+                if (changedRound.newIndex !== changedRound.oldIndex) {
+                    this.rounds.splice(changedRound.oldIndex, 1);
+                    this.rounds.splice(changedRound.newIndex, 0, changedRound.round);
+                } else {
+                    this.rounds[changedRound.newIndex] = changedRound.round;
+                }
+            } else {
+                this.rounds.splice(changedRound.newIndex, 0, changedRound.round);
+            }
+        });
     }
 
     public selectRound(round: GolfRound) {
